@@ -1,0 +1,19 @@
+server:
+  port: 8082
+  servlet:
+    contextPath: /mail-sender
+spring:
+  application:
+    name: mail-sender
+  mail:
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+          auth: true
+    host: smtp.gmail.com
+    username: bank.projesi@gmail.com
+    password: yunk dhjd rfqe smdm
+    port: 587
+
