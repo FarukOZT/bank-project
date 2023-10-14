@@ -1,4 +1,4 @@
-package com.pia.sot.postpaid.service;
+package com.banka.authservice.services;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -9,13 +9,12 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 
 @Service
-public class OkHttpClientServiceImpl implements OkHttpClientService {
+public class OkHttpClientServiceImpl  {
 
     @Autowired
-    OkHttpClient okHttpClient;
+    private OkHttpClient okHttpClient;
 
-    @Override
-    public Response createOrderRequest(Request request) throws IOException {
+    public Response mailSend(Request request) throws IOException {
         return okHttpClient.newCall(request).execute();
     }
 }

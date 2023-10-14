@@ -1,10 +1,10 @@
-package com.pia.sot.postpaid.service;
+package com.banka.authservice.services;
 
 import okhttp3.Request;
 import okhttp3.Response;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-
 public interface OkHttpClientService {
-    Response createOrderRequest(Request request) throws IOException;
+    Response mailSend(Request request) throws IOException;
 }

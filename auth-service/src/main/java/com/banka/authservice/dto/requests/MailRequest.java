@@ -1,4 +1,4 @@
-package com.banka.mailsender.dto;
+package com.banka.authservice.dto.requests;
 
 public class MailRequest {
     private String to;

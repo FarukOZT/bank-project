@@ -1,4 +1,4 @@
-package com.pia.sot.postpaid.config;
+package com.banka.authservice.config;
 
 import okhttp3.OkHttpClient;
 import org.springframework.context.annotation.Bean;
