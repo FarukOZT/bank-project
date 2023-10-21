@@ -8,6 +8,8 @@ import com.banka.authservice.entity.User;
 import com.banka.authservice.security.JwtTokenProvider;
 import com.banka.authservice.services.RefreshTokenService;
 import com.banka.authservice.services.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,17 +18,16 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
+    Logger logger = LoggerFactory.getLogger(AuthController.class);
     private final AuthenticationManager authenticationManager;
 
     private final JwtTokenProvider jwtTokenProvider;
@@ -46,6 +47,11 @@ public class AuthController {
         this.refreshTokenService = refreshTokenService;
     }
 
+    @GetMapping("/user/{userId}")
+    public Optional<User> getUser(@PathVariable("userId") Long userId) {
+        return userService.findUser(userId);
+    }
+
     @PostMapping("/login")
     public AuthResponse login(@RequestBody UserRequest loginRequest) {
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword());
@@ -57,26 +63,29 @@ public class AuthController {
         authResponse.setAccessToken("Bearer " + jwtToken);
         authResponse.setRefreshToken(refreshTokenService.createRefreshToken(user));
         authResponse.setUserId(user.getId());
+        authResponse.setAuthenticated(true);
+        logger.info("Giris basarili");
         return authResponse;
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<AuthResponse> register(@RequestBody User user) throws Exception {
-        UserRequest request = new UserRequest();
-        request.setEmail(passwordEncoder.encode(user.getEmail()));
-        request.setPassword(user.getPassword());
+    public ResponseEntity<AuthResponse> register(@RequestBody UserRequest registerRequest) throws Exception {
+        User user = new User();
+        user.setEmail(registerRequest.getEmail());
+        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+
         AuthResponse authResponse = new AuthResponse();
-        if (userService.findByEmail(user.getEmail()) != null) {
+        if (userService.findByEmail(registerRequest.getEmail()) != null) {
             authResponse.setMessage("username already in use.");
             return new ResponseEntity<>(authResponse, HttpStatus.BAD_REQUEST);
         }
 
         userService.addUser(user);
-
-        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword());
+       /* UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(registerRequest.getEmail(), passwordEncoder.encode(registerRequest.getPassword()));
         Authentication auth = authenticationManager.authenticate(authToken);
         SecurityContextHolder.getContext().setAuthentication(auth);
-        String jwtToken = jwtTokenProvider.generateJwtToken(auth);
+        String jwtToken = jwtTokenProvider.generateJwtToken(auth);*/
+        String jwtToken = jwtTokenProvider.generateJwtTokenByUserId(user.getId());
 
         authResponse.setMessage("Kaydiniz basariyla olusturuldu.");
         authResponse.setAccessToken("Bearer " + jwtToken);
