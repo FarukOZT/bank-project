@@ -13,11 +13,6 @@ public class PaymentController {
         this.paymentService = paymentService;
     }
 
-    /*@PostMapping("paybil")
-    public Payment makeAllPayment2(@RequestParam("userId") Long userId){
-        return paymentService.makePayment2(userId);
-    }
-*/
     @PostMapping("paybill")
     public Payment makeAllPayment3(@RequestParam("userId") Long userId,
                                    @RequestParam("billId") Long billId,
