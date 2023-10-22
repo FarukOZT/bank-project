@@ -1,0 +1,34 @@
+
+server:
+  port: 8082
+  servlet:
+    contextPath: /bill-payment-service
+
+spring:
+  application:
+    name: bill-payment
+  datasource:
+    url: jdbc:postgresql://localhost:5432/invoice
+    username: postgres
+    password: 12345
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL9Dialect
+  spring.jpa.show-sql: true
+  spring.jpa.hibernate.ddl-auto: update
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+  main.allow-circular-references: true
+
+rabbit.queue.name: deneme-queue
+rabbit.routing.name: deneme-routing
+rabbit.exchange.name: deneme-exchange
+
+basic.app.secret: invoice
+basic.app.expires.in: 120000
+refresh.token.expires.in: 604800
