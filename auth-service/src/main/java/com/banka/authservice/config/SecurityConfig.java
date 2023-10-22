@@ -73,7 +73,7 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/**")
-                .permitAll()
+                .authenticated()
                 .antMatchers(HttpMethod.POST, "/**")
                 .permitAll()
                 .antMatchers(HttpMethod.POST, "/auth/**")
