@@ -15,17 +15,13 @@ spring:
             - RewritePath=/auth-service/(?<segment>.*), /$\{segment}
             - SetRequestHeader=X-Auth-Token, $http_x_auth_token  # Auth Service'den gelen header'ı User Service'e iletmek
         - id: bill-payment
-          uri: http://localhost:8085
+          uri: http://localhost:8082
           predicates:
             - Path=/bill-payment-service/**
         - id: mail-sender
           uri: http://localhost:8083
           predicates:
             - Path=/mail-sender/**
-        - id: eureka
-          uri: http://localhost:8084
-          predicates:
-            - Path=/eureka/**
 
   main:
     web-application-type: reactive
