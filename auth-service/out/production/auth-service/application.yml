@@ -1,0 +1,22 @@
+server:
+  port: 8081
+  servlet:
+    contextPath: /auth-service
+
+spring:
+  application:
+    name: auth-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/invoice
+    username: postgres
+    password: 12345
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL9Dialect
+  spring.jpa.show-sql: true
+  spring.jpa.hibernate.ddl-auto: update
+
+invoice.app.secret: invoice
+invoice.app.expires.in: 120000
+refresh.token.expires.in: 604800
